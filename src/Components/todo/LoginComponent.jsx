@@ -33,7 +33,7 @@ export default function LoginComponent() {
       <div className="LoginForm">
         <h1>Login Form</h1>
         {showErrorMessage && (
-          <div className="errorMessage">
+          <div className="errorMessage p-1 mb-2 bg-danger text-white">
             Authentication Failed. Check your Credentials
           </div>
         )}
