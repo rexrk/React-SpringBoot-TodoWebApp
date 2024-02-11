@@ -5,7 +5,7 @@ function WelcomeComponent() {
   function callHelloWorldRestApi() {
     console.log("called");
     axios
-    .get("http://localhost:8080/hello-rest")
+    .get("http://localhost:8080/hello-world     ")
     .then((response) => SuccessfulResponse(response))
     .catch((error) => ErrorResponse(error))
     .finally(console.log('cleanup'))
