@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class TodoService {
 	
-	private static List<Todo> todos = new ArrayList<>();
+	private static final List<Todo> todos = new ArrayList<>();
 	
 	private static int todosCount = 0;
 	
 	static {
-		todos.add(new Todo(++todosCount, "in28minutes","Get AWS Certified", 
+		todos.add(new Todo(++todosCount, "rexrk","Drink Soup",
 							LocalDate.now().plusYears(10), false ));
-		todos.add(new Todo(++todosCount, "in28minutes","Learn DevOps", 
+		todos.add(new Todo(++todosCount, "rexrk","Eat snacks",
 				LocalDate.now().plusYears(11), false ));
-		todos.add(new Todo(++todosCount, "in28minutes","Learn Full Stack Development", 
+		todos.add(new Todo(++todosCount, "rexrk","Learn Full Stack Development",
 				LocalDate.now().plusYears(12), false ));
 	}
 	
@@ -41,8 +41,7 @@ public class TodoService {
 
 	public Todo findById(int id) {
 		Predicate<? super Todo> predicate = todo -> todo.getId() == id;
-		Todo todo = todos.stream().filter(predicate).findFirst().get();
-		return todo;
+        return todos.stream().filter(predicate).findFirst().orElseThrow();
 	}
 
 	public void updateTodo(Todo todo) {
