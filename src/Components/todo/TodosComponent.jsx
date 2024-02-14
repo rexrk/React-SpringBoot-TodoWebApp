@@ -4,21 +4,17 @@ import {
   retrieveAllTodosForUsernameApi,
 } from "./api/TodoApiService";
 import { useEffect } from "react";
+import { useAuth } from "./security/AuthContext";
 
 export default function TodosComponent() {
-  const today = new Date();
-  const targetDate = new Date(
-    today.getFullYear() + 1,
-    today.getMonth(),
-    today.getDay()
-  );
-
   const [todos, setTodos] = useState([]);
+  const authContext = useAuth()
+  const username = authContext.username
 
   useEffect(() => refreshTodos(), []);
 
   function refreshTodos() {
-    retrieveAllTodosForUsernameApi("rexrk")
+    retrieveAllTodosForUsernameApi(username)
       .then((response) => {
         setTodos(response.data);
       })
@@ -28,7 +24,7 @@ export default function TodosComponent() {
   const [message, setMessage] = useState(null);
 
   function deleteTodo(id) {
-    deleteTodoByIdApi("rexrk", id)
+    deleteTodoByIdApi(username, id)
       .then(() => {
         setMessage(`delete todo with id : ${id} successful`);
         refreshTodos();
@@ -39,7 +35,7 @@ export default function TodosComponent() {
   return (
     <div className="container">
       <h1>Things you want to do!</h1>
-      {message != null && <div className="alert alert-warning">{message}</div>}
+      {message && <div className="alert alert-warning">{message}</div>}
       <div>
         <table className="table">
           <thead>
