@@ -5,6 +5,7 @@ import {
 } from "./api/TodoApiService";
 import { useEffect } from "react";
 import { useAuth } from "./security/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function TodosComponent() {
   const [todos, setTodos] = useState([]);
@@ -31,6 +32,12 @@ export default function TodosComponent() {
       })
       .catch((error) => console.log(error));
   }
+  
+  const navigate = useNavigate()
+  
+  function updateTodo(id) {
+    navigate(`/todo/${id}`)
+  }
 
   return (
     <div className="container">
@@ -38,13 +45,17 @@ export default function TodosComponent() {
       {message && <div className="alert alert-warning">{message}</div>}
       <div>
         <table className="table">
+
           <thead>
             <tr>
-              <td>Description</td>
-              <td>Is Done</td>
-              <td>Target Date</td>
+              <th>Description</th>
+              <th>Is Done</th>
+              <th>Target Date</th>
+              <th className="text-danger">Delete</th>
+              <th className="text-info">Update</th>
             </tr>
           </thead>
+
           <tbody>
             {todos.map((todo) => (
               <tr key={todo.id}>
@@ -60,6 +71,16 @@ export default function TodosComponent() {
                     }}
                   >
                     Delete
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      updateTodo(todo.id);
+                    }}
+                  >
+                    Update
                   </button>
                 </td>
               </tr>
