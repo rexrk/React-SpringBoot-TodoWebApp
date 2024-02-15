@@ -23,7 +23,6 @@ function WelcomeComponent() {
   }
 
   function SuccessfulResponse(response) {
-    console.log(response);
     setMessage(response.data.message);
   }
 

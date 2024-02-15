@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import { retrieveTodoApi } from "./api/TodoApiService";
+import { useNavigate, useParams } from "react-router-dom";
+import { retrieveTodoApi, updateTodoApi } from "./api/TodoApiService";
 import { useAuth } from "./security/AuthContext";
 import { useEffect, useState } from "react";
 import { Field, Formik, Form, ErrorMessage } from "formik";
@@ -25,24 +25,35 @@ export default function TodoComponent() {
       .catch((error) => console.log(error));
   }
 
+  const navigate = useNavigate();
   function onSubmit(values) {
-    console.log('submitted');
+    const todo = {
+      id: id,
+      username: username,
+      description: values.description,
+      targetDate: values.targetDate,
+      done: false,
+    };
+    updateTodoApi(username, id, todo)
+      .then((response) => {
+        navigate("/todos");
+      })
+      .catch((error) => console.log(error));
   }
 
   function validate(values) {
     let errors = {
-    //   description : "Enter a valid description",
-    //   targetDate : 'Enter a valid date'
+      //   description : "Enter a valid description",
+      //   targetDate : 'Enter a valid date'
     };
 
     if (values.description.length < 5) {
       errors.description = "Enter a valid description";
-    }   
+    }
 
     if (new Date(values.targetDate) < new Date()) {
       errors.targetDate = "Enter a valid date";
     }
-    console.log('validate');
     return errors;
   }
 
@@ -56,7 +67,8 @@ export default function TodoComponent() {
           enableReinitialize={true}
           onSubmit={onSubmit}
           validate={validate}
-
+          validateOnBlur={false}
+          validateOnChange={false}
         >
           {(props) => (
             <Form>
@@ -64,7 +76,6 @@ export default function TodoComponent() {
                 name="description"
                 component="div"
                 className="alert alert-warning"
-
               />
               <ErrorMessage
                 name="targetDate"
