@@ -39,6 +39,10 @@ export default function TodosComponent() {
     navigate(`/todo/${id}`)
   }
 
+  function addNewTodo() {
+    navigate(`/todo/-1`)
+  }
+
   return (
     <div className="container">
       <h1>Things you want to do!</h1>
@@ -60,7 +64,7 @@ export default function TodosComponent() {
             {todos.map((todo) => (
               <tr key={todo.id}>
                 <td>{todo.description}</td>
-                <td>{todo.done.toString()}</td>
+                <td>{todo.done ? "Yes" : "No"}</td>
                 {/* <td>{todo.targetDate.toDateString()}</td> */}
                 <td>{todo.targetDate.toString()}</td>
                 <td>
@@ -87,6 +91,7 @@ export default function TodosComponent() {
             ))}
           </tbody>
         </table>
+        <div><button className="btn btn-primary m-5" onClick={addNewTodo}>Add New Todo</button></div>
       </div>
     </div>
   );

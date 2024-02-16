@@ -1,8 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { retrieveTodoApi, updateTodoApi } from "./api/TodoApiService";
+import {
+  createNewTodoApi,
+  retrieveTodoApi,
+  updateTodoApi,
+} from "./api/TodoApiService";
 import { useAuth } from "./security/AuthContext";
 import { useEffect, useState } from "react";
 import { Field, Formik, Form, ErrorMessage } from "formik";
+import moment from "moment";
 
 export default function TodoComponent() {
   //parameters
@@ -17,15 +22,18 @@ export default function TodoComponent() {
   useEffect(() => retrieveTodo(), [id]);
 
   function retrieveTodo() {
-    retrieveTodoApi(username, id)
-      .then((response) => {
-        setDescription(response.data.description);
-        setTargetDate(response.data.targetDate);
-      })
-      .catch((error) => console.log(error));
+    if (id !== -1) {
+      retrieveTodoApi(username, id)
+        .then((response) => {
+          setDescription(response.data.description);
+          setTargetDate(response.data.targetDate);
+        })
+        .catch((error) => console.log(error));
+    }
   }
 
   const navigate = useNavigate();
+
   function onSubmit(values) {
     const todo = {
       id: id,
@@ -34,11 +42,18 @@ export default function TodoComponent() {
       targetDate: values.targetDate,
       done: false,
     };
-    updateTodoApi(username, id, todo)
-      .then((response) => {
-        navigate("/todos");
-      })
-      .catch((error) => console.log(error));
+
+    if (id === -1) {
+      createNewTodoApi(username, todo)
+        .then(navigate("/todos"))
+        .catch((error) => console.log(error));
+    } else {
+      updateTodoApi(username, id, todo)
+        .then((response) => {
+          navigate("/todos");
+        })
+        .catch((error) => console.log(error));
+    }
   }
 
   function validate(values) {
@@ -51,7 +66,10 @@ export default function TodoComponent() {
       errors.description = "Enter a valid description";
     }
 
-    if (new Date(values.targetDate) < new Date()) {
+    if (
+      !moment(values.targetDate).isValid() ||
+      moment(values.targetDate).isBefore(moment())
+    ) {
       errors.targetDate = "Enter a valid date";
     }
     return errors;
