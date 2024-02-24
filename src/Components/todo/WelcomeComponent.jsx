@@ -16,7 +16,7 @@ function WelcomeComponent() {
     //   .finally(console.log("cleanup"));
 
     // retrieveHelloWorldBean()
-    retrieveHelloWorldPathVariable(username)
+    retrieveHelloWorldPathVariable('krxer')
       .then((response) => SuccessfulResponse(response))
       .catch((error) => ErrorResponse(error))
       .finally(console.log("cleanup"));
