@@ -23,6 +23,5 @@ public class BasicAuthenticationSecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
-
     }
 }

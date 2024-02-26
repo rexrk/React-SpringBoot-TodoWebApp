@@ -1,22 +1,14 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  /*retrieveHelloWorldBean,*/ retrieveHelloWorldPathVariable,
-} from "./api/HelloWorldApiService";
+import { retrieveHelloWorldPathVariable } from "./api/HelloWorldApiService";
+import { useAuth } from "./security/AuthContext";
 
 function WelcomeComponent() {
   const { username } = useParams();
   const [message, setMessage] = useState();
-
+  const authContext = useAuth();
   function callHelloWorldRestApi() {
-    // axios
-    //   .get("http://localhost:8080/hello-world")
-    //   .then((response) => SuccessfulResponse(response))
-    //   .catch((error) => ErrorResponse(error))
-    //   .finally(console.log("cleanup"));
-
-    // retrieveHelloWorldBean()
-    retrieveHelloWorldPathVariable('krxer')
+    retrieveHelloWorldPathVariable("krxer", authContext.token)
       .then((response) => SuccessfulResponse(response))
       .catch((error) => ErrorResponse(error))
       .finally(console.log("cleanup"));
