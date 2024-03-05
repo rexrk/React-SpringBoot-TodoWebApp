@@ -54,7 +54,7 @@ public class JwtSecurityConfig {
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()) // (3)
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) // (4)
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())) // (4)
                 .exceptionHandling(
                         (ex) -> ex.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
